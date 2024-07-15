@@ -24,8 +24,25 @@ SELECT TOP 10 *
 	ORDER BY  TotalDue
 
 
+/*La sentencia OR se puede sistituir por la sentencia IN 
+de la siguiente manera*/
+--Mostramos como es la forma del uso de OR
 
 
 
+SELECT -- *
+	COUNT(*)
+	FROM [Sales].[SalesORderHeader]
+		WHERE [TerritoryID] = 1 OR
+			  [TerritoryID] = 7 OR
+			  [TerritoryID] = 9
+--Y Esta es la forma en la cual nosotros podemos usar el IN 
+SELECT -- *
+	COUNT(*)
+	FROM [Sales].[SalesORderHeader]
+		WHERE [TerritoryID] IN (1, 7, 9)
+
+--Dentro de WHERE, podemos hacer el filtrado de diferentes columnas al mismo tiempo
+--Haciendo uso de las clausulas primitivas (AND, OR, NOT)
 
 
