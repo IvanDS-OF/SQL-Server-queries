@@ -60,9 +60,36 @@ ORDER BY 1 DESC
 
 
 
+/*Caso de estudio: Tenemos nuestra tabla de clientes, y nuestra tabla de ventas. Queremos saber
+CUALES SON LOS 3 PRINCIPALES PRODUCTOS QUE CADA CLIENTE CONSUME. RETORNASR 3 VALORES POR CADA CLIENTE
+Es posible hacer uso de los cursores, pero son lentos- Realmente es mala porque funcionana en BUCLES-
+Y las sentenisa de extraccion simples de datos son procesos por bloques
+Dada esta situacion y la limitante, Vamos a tener que hacer uso de APPLY
+APPLY - Genera iteraciones de subconsultas, para genersar un subconjunto de datos para usarlo en 
+la consulta principal*/
 
-
-
+--Comenzamos con nustra consulta basse
+SELECT P.FirstName, P.LastName, P.BusinessEntityID
+, PR.Name, R.Total
+FROM Sales.Customer AS C
+INNER JOIN Person.Person AS P
+--Ahora tenemos que obtener la informacion de los producto que cada cliente ha comprado más
+--Para ello vamos a usar CROSS APPLY, Que me va a retornar la iteracion entre lo valores de B
+ON C.PersonID = P.BusinessEntityID
+CROSS APPLY (
+	SELECT TOP 3 D.ProductID, SUM(D.LineTotal) as Total
+	FROM Sales.SalesOrderHeader as H
+	INNER JOIN Sales.SalesOrderDetail as D
+	ON H.SalesOrderID = D.SalesOrderID
+	--Es necesario recordar que se tiene que acer una iteración por cliente
+	--Por ello usamos nuestro WHERE para hace el filtro por cliente
+	WHERE C.CustomerID = H.CustomerID
+	GROUP BY D.ProductID
+	ORDER BY 2 DESC
+) AS R
+INNER JOIN Production.Product as PR
+ON PR.ProductID = R.ProductID
+ORDER BY P.BusinessEntityID
 
 
 
