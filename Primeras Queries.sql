@@ -17,6 +17,9 @@ SELECT [SubTotal], [TaxAmt], [Freight], [TotalDue],
 	WHERE SalesOrderID='43661';
 
 
+
+SELECT @@SERVERNAME;
+
 SELECT TOP 10 *
 	FROM [Sales].[SalesOrderHeader]
 	---WHERE TotalDue BETWEEN 3 AND 5
@@ -57,4 +60,39 @@ SELECT TOP 10 *
 SELECT	COLUMN_NAME, DATA_TYPE 
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_NAME = 'SalesOrderHeader'
+
+
+--The use of LIKE sentence - When we need the vallues that contains some 
+--specific information, We just can use this sentence in String Type
+SELECT *
+FROM [Sales].[SalesOrderHeader]
+WHERE AccountNumber LIKE '%021%8'
+--The % sign means all the posible values within the query
+
+
+--How to manage dates, we can Filter the WHERE sentence using the specific date or 
+--using ranges of dates using ADNs and the Substraction values process, as follow
+SELECT *
+FROM [Sales].[SalesOrderHeader]
+WHERE YEAR(OrderDate) = 2011 AND
+	MONTH(OrderDate) = 12 AND
+	DAY(OrderDate) IN (1, 4, 31)
+
+
+
+/*Es posible ordenar la informacion que encontramos dentro de una columna
+Es posible ordenar de Menos a Mayor y viceversa
+ASC / DESC*/
+
+SELECT * 
+FROM [Sales].[SalesOrderHeader]
+--ORDER BY [SalesOrderID] ASC
+ORDER BY [SalesOrderID] DESC
+--Es posible agregar o tener + de 2 ordenadores. para eso los separamos con una coma
+
+SELECT * 
+FROM [Sales].[SalesOrderHeader]
+--ORDER BY [SalesOrderID] ASC
+ORDER BY AccountNumber, TotalDue DESC
+
 
