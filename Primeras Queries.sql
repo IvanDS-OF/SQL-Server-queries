@@ -46,3 +46,15 @@ SELECT -- *
 --Haciendo uso de las clausulas primitivas (AND, OR, NOT)
 
 
+--Otra clausula interesante es el Between y AND, de la siguiente manera
+SELECT TOP 10 *
+	FROM [Sales].[SalesOrderHeader]
+	WHERE TotalDue BETWEEN 3 AND 5
+	--WHERE TotalDue>=4 AND TotalDue<6
+	ORDER BY  TotalDue
+
+--HOw can i show the type of the values within my columns ? 
+SELECT	COLUMN_NAME, DATA_TYPE 
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'SalesOrderHeader'
+
