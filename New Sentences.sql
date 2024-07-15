@@ -1,0 +1,1 @@
+--Vamos a escribir nuevas sentencias relacionadas más a T SQL
