@@ -87,7 +87,36 @@ ON E.SalesOrderID = S.SalesOrderID
 WHERE MONTH(E.OrderDate) = 1
 
 
+/*Ahora, vamos a ver cómo se usan los LEFT and RIGHT JOIN para la resolución de un problema
+de negocio. Se quiere saber de los productos existentes, cuánta ha sido su correspondencia en dinero 
+ganado por las ventas. Por lo que es necesario primero tener en consideraci´n todos y cada uno de los 
+elementos existentes dentro de nuestra base de datos de Productos, y hacer la relación con las ventas
+Sin importanr si un producto ha sido vendido o no. Para ello podemos comenzar usando la sentencia LEFT JOIN
+Siendo el valor A nuestra base de datos de los productos, */
+SELECT COUNT(*)
+FROM [Production].[Product] AS P
 
+SELECT P.Name, P.ProductNumber, SUM(S.OrderQty * S.UnitPrice) AS TOTAL
+FROM [Production].[Product] AS P 
+LEFT JOIN [Sales].[SalesOrderDetail] AS S
+ON P.ProductID = S.ProductID
+--CONSIDERER: Cuando usamos neustro LEFT JOIN o nuestro RIGHT JOIN  - SIEMPRE es necesario colocar 
+--Una sentencia GROUP BY, ya que nos dará errores y no podremos continuar con la consulta
+GROUP BY P.Name, P.ProductNumber
+--Lo que indica este sentencia final es que la agrupación solamente será a partir de los valores
+--encontrados dentro de nuestra Tabla P, o dentro de nuestra tabla a la izquierda
+
+
+--Teniendo la base anterior, podemos ahora si comenzar a plicar filtros. RECORDAR
+--Es importante tener ecn consideracion la jerarquia entre las sentencias. Para hacer el filtro se
+--Va a tener que hacer uso de un WHERE, pero esta sentencia siempre va antes de GROUP BY, por lo que
+--lpara que funcione el filtro y no de errores, la tendremos que colocar en su lugar correspondiente
+SELECT P.Name, P.ProductNumber, SUM(S.OrderQty * S.UnitPrice) AS TOTAL
+FROM [Production].[Product] AS P 
+LEFT JOIN [Sales].[SalesOrderDetail] AS S
+ON P.ProductID = S.ProductID
+WHERE S.ProductID IS NULL
+GROUP BY P.Name, P.ProductNumber
 
 
 
